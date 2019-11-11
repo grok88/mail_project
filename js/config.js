@@ -18,7 +18,10 @@
 
 let config = (function(){
     let configService = {
-        "A" : 1
+        "AZ" : page => page.sort(listService.sortEmailAZ),
+        "ZA" : page => page.sort(listService.sortEmailZA),
+        "Admin" : page => page.filter(listService.sortAdmin),
+        "User" : page => page.filter(listService.sortUser)
     }
     return {
         configService

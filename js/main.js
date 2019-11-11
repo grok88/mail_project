@@ -248,11 +248,12 @@
     function applySortMethod(sortType){
         pageService.currentPage = 0;
         userList.innerHTML = '';
+        buildUserList(config.configService[sortType]);
 
-        if (sortType == "AZ"){
+   /*      if (sortType == "AZ"){
             let sortFunction = (page) => {
                 page.sort(listService.sortEmailAZ);
-                return page
+                return page;
             }
             buildUserList(sortFunction);
         }
@@ -277,14 +278,14 @@
                 return page.filter(listService.sortUser);
             }
             buildUserList(filterFunction);
-        }
+        } */
     }
 
     // Поиск search
     function searchFunc(e){
         e.preventDefault();
         let value = e.target.value;
-        
+
         if (e.keyCode === 13 && (value.length === 0 || value.length > 2)){
             pageService.currentPage = 0;
             userList.innerHTML = '';
