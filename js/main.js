@@ -22,7 +22,11 @@
         countRole = document.querySelector('.statsUsers'),
         emailDropDown = document.querySelector('#dropdown-email'),
         roleDropDown = document.querySelector('#dropdown-role'),
-        search = document.querySelector('#inputSearch');
+        search = document.querySelector('#inputSearch'),
+        mainView = document.querySelector('.mainBlock'),
+        detailsView = document.querySelector('#details-view'),
+        detailsItem = document.querySelector('#details-item'),
+        backBtn = document.querySelector('#back-btn');
 
     let userData = [];
 
@@ -33,11 +37,12 @@
 
     function initListeners(){
         selectAll.addEventListener('click', selectAllItem);
-        userList.addEventListener('click', selectTabLine);
+        userList.addEventListener('click', selectLineHandler);
         nextBtn.addEventListener('click', getNextPage);
         emailDropDown.addEventListener('click', sortHandler);
         roleDropDown.addEventListener('click', sortHandler);
         search.addEventListener('keyup', searchFunc);
+        backBtn.addEventListener('click', backMain);
     }
 
     // выбор всех чекбоксов
@@ -46,6 +51,25 @@
         chexkboxes.forEach(elem => {
             selectAll.checked ? elem.checked = true : elem.checked = false;
         });
+    }
+    // Если нажата кнопка открыть -выбирает Открыть детальнее(openDetails), если клики на всё остальное - выбирает выделить ряд(selectTabLine)
+    function selectLineHandler(event){
+        let isBtn = event.target.getAttribute('data-row-id');
+        isBtn ? openDetails(isBtn) : selectTabLine(event);
+    }
+
+    // openDetails
+    function openDetails (rowId){
+        listService.hideElem(mainView);
+        listService.showElem(detailsView);
+        let userId = userData.filter(elem => rowId == elem.id);
+        detailsItem.innerHTML = listService.templateDetails(userId[0]);
+    }
+
+    //Вернуться на главную страницу
+    function backMain(){
+        listService.hideElem(detailsView);
+        listService.showElem(mainView);
     }
 
     // Выделение выбраной линии по клику
@@ -153,7 +177,6 @@
     // дублируем массив
     function dublicateArr (){
         userData =  listService.dublicateData(users, 1);
-        console.log(userData);
     }
 
     // Отображение следущего списка
