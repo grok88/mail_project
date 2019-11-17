@@ -195,8 +195,47 @@
         userList.innerHTML += result.join('');
     }
 
+    // -------         Это чисто тренинг по AJAX и Promise ---------------
+
+    // Просто отображение инфы(полученной с сервера) в консоли
+    function showServerData(){
+        let url = 'http://jsonplaceholder.typicode.com/comments?postId=1';
+        let info = listService.getdata(url);
+        info
+        .then(response => {
+            console.log('Данные с сервера');
+            console.log(JSON.parse(response));
+        })
+        .catch(error => {
+            console.log('Big error');
+            console.log(error);
+        });
+    }
+    // Отправин данные на сервеп
+    function PostServData(){
+        let data = {
+            name : 'alex',
+            country : 'Belarus',
+            age : 31
+        }
+        let url = 'http://jsonplaceholder.typicode.com/posts';
+
+        let info = listService.sendData(url, data);
+        info
+        .then(resolve => {
+            console.log('Данные успешно отправлены');
+            console.log(JSON.parse(resolve));
+        })
+        .catch(error => {
+            console.log(error);
+        });
+    }
+
+    //----------------------------------------------------------------------------
     // Инициализация
     function init(){
+        PostServData();
+        showServerData();
         initListeners();
         dublicateArr();
         buildUserList();

@@ -68,6 +68,41 @@ let listService = (function(){
             <p>Сайт пользователя - ${elem.website}<p>
         `;
     }
+    // Поллучение данных с сервера - Промисы
+    function getdata(url){
+        return new Promise((resolve, reject) =>{
+            const xhr = new XMLHttpRequest();
+
+            xhr.open('GET', url , true);
+            xhr.onload = function(){
+                if (xhr.status === 200){
+                    resolve(xhr.responseText);
+                } else {
+                    reject(`Произошла ошибка - ${xhr.statusText}`);
+                }
+            };
+            xhr.send();
+        });
+    }
+    // Отправка данных на сервер
+    function sendData(url, data){
+        return new Promise((resolve, reject) => {
+            const xhr = new XMLHttpRequest();
+
+            xhr.open('POST', url);
+            xhr.setRequestHeader('Content-Type', 'application/json');
+            xhr.onload = function(){
+                console.log(xhr.status);
+                if (xhr.status === 201){
+                    resolve(xhr.response);
+                } else {
+                    reject(new Error (` Big Error => ${xhr.statusText}`));
+                }
+            }
+            
+            xhr.send(JSON.stringify(data));
+        });
+    }
 
     // Внешний интерфейс
     return {
@@ -79,7 +114,9 @@ let listService = (function(){
         sortUser,
         templateDetails,
         hideElem,
-        showElem
+        showElem,
+        getdata,
+        sendData
     }
 })();
 
